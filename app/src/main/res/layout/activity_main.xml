@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.kevin.firstapp.MainActivity">
+
+
+
+    <LinearLayout
+        android:layout_width="368dp"
+        android:layout_height="183dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="56dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose sensor(s) to test:"
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="29dp" />
+
+        <Button
+            android:id="@+id/compassBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startCompass"
+            android:text="COMPASS" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <Button
+            android:id="@+id/accelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startAccel"
+            android:text="ACCELEROMETERS" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
