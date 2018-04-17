@@ -1,15 +1,19 @@
 package com.example.kevin.firstapp;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.os.Vibrator;
 
 public class CompassActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -26,6 +30,10 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     private boolean mLastAccelerometerSet = false;
     private boolean mLastMagnetometerSet = false;
 
+    NorthVibratorBeeper vibBeep;
+    NorthMonitor mon = new NorthMonitor();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +42,11 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         compass_img = (ImageView) findViewById(R.id.img_compass);
         txt_compass = (TextView) findViewById(R.id.txt_azimuth);
+
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        ToneGenerator t = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+        vibBeep = new NorthVibratorBeeper(mon, v, t);
+        vibBeep.start();
 
         start();
     }
@@ -63,23 +76,45 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
 
         String where = "NW";
 
-        if (mAzimuth >= 350 || mAzimuth <= 10)
+        if (mAzimuth >= 350 || mAzimuth <= 10){
             where = "N";
-        if (mAzimuth < 350 && mAzimuth > 280)
-            where = "NW";
-        if (mAzimuth <= 280 && mAzimuth > 260)
-            where = "W";
-        if (mAzimuth <= 260 && mAzimuth > 190)
-            where = "SW";
-        if (mAzimuth <= 190 && mAzimuth > 170)
-            where = "S";
-        if (mAzimuth <= 170 && mAzimuth > 100)
-            where = "SE";
-        if (mAzimuth <= 100 && mAzimuth > 80)
-            where = "E";
-        if (mAzimuth <= 80 && mAzimuth > 10)
-            where = "NE";
+            mon.setNorth(true);
+        }
 
+        if (mAzimuth < 350 && mAzimuth > 280){
+            where = "NW";
+            mon.setNorth(false);
+        }
+
+        if (mAzimuth <= 280 && mAzimuth > 260){
+            where = "W";
+            mon.setNorth(false);
+        }
+
+        if (mAzimuth <= 260 && mAzimuth > 190){
+            where = "SW";
+            mon.setNorth(false);
+        }
+
+        if (mAzimuth <= 190 && mAzimuth > 170){
+            where = "S";
+            mon.setNorth(false);
+        }
+
+        if (mAzimuth <= 170 && mAzimuth > 100){
+            where = "SE";
+            mon.setNorth(false);
+        }
+
+        if (mAzimuth <= 100 && mAzimuth > 80){
+            where = "E";
+            mon.setNorth(false);
+        }
+
+        if (mAzimuth <= 80 && mAzimuth > 10){
+            where = "NE";
+            mon.setNorth(false);
+        }
 
         txt_compass.setText(mAzimuth + "° " + where);
     }
@@ -133,12 +168,14 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     @Override
     protected void onPause() {
         super.onPause();
+        //vibBeep.interrupt();
         stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         start();
     }
 }

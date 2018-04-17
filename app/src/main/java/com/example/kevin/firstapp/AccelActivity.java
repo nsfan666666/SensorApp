@@ -65,17 +65,17 @@ public class AccelActivity extends AppCompatActivity implements SensorEventListe
             direction[0] = "LEFT";
         } else if (xChange > 2){
             direction[0] = "RIGHT";
-        } else if (xChange >= -2 && xChange <= 2) {
+        } /*else if (xChange >= -2 && xChange <= 2) {
             direction[0] = "NONE";
-        }
+        }*/
 
         if (yChange < -2){
             direction[1] = "DOWN";
         } else if (yChange > 2){
             direction[1] = "UP";
-        } else if (yChange >= -2 && yChange <= 2) {
+        } /*else if (yChange >= -2 && yChange <= 2) {
             direction[1] = "NONE";
-        }
+        }*/
 
         builder.setLength(0);
         builder.append("x: ");
